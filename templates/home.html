@@ -1,45 +1,113 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8">
   <title>GIS Sulawesi Barat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
 </head>
+
 <body>
+  <nav class="navbar is-danger is-light" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-weight-semibold" href="/">
+        Pemetaan Spasial Sulawesi Barat
+      </a>
 
-<section class="section">
-  <div class="container">
-
-    <h1 class="title has-text-centered mb-6">
-      Sistem Informasi Geografis Sulawesi Barat
-    </h1>
-
-    <div class="columns is-multiline">
-
-      {{ range .maps }}
-      <div class="column is-3">
-        <div class="card">
-          <div class="card-content">
-            <p class="title is-5">{{ .title }}</p>
-            <p class="content">{{ .desc }}</p>
-          </div>
-          <footer class="card-footer">
-            <a href="/map/{{ .id }}" class="card-footer-item">
-              Buka Peta
-            </a>
-          </footer>
-        </div>
-      </div>
-      {{ end }}
-
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarHome">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
     </div>
 
-  </div>
-</section>
+    <div id="navbarHome" class="navbar-menu">
+      <div class="navbar-end">
+        {{ if .isLoggedIn }}
+        <div class="navbar-item">
+          <a href="/admin/desa" class="has-text-weight-semibold has-text-white">
+            {{ .name }}
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a href="/logout" class="button is-warning">
+            Logout
+          </a>
+        </div>
+        {{ else }}
+        <div class="navbar-item">
+          <a href="/login" class="button is-info">
+            Login
+          </a>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </nav>
+
+  <section class="section">
+    <div class="container">
+
+      <h1 class="title has-text-centered mb-6">
+        Sistem Informasi Geografis Sulawesi Barat
+      </h1>
+
+      <div class="columns is-multiline">
+        {{ range .maps }}
+        <div class="column is-3">
+          <div class="card">
+
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="{{ .Image }}" alt="{{ .Title }}">
+              </figure>
+            </div>
+
+            <div class="card-content">
+              <p class="title is-5">{{ .Title }}</p>
+              <p class="content">{{ .Description }}</p>
+            </div>
+
+            <footer class="card-footer">
+              <a href="/map/{{ .Code }}" class="card-footer-item">
+                Buka Peta
+              </a>
+            </footer>
+
+          </div>
+        </div>
+        {{ end }}
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <span>CC BY-NC-SA 4.0</a>, sejak 2016 &copy; Deo Valiandro. M, 🌱 dengan ❤️</span>
+        <br>
+        <a rel="me" href="https://x.com/deovaliandro">twitter</a> |
+        <a target="_blank" href="https://github.com/deovaliandro">github</a>
+      </p>
+    </div>
+  </footer>
 
 </body>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const burgers = document.querySelectorAll('.navbar-burger');
+    burgers.forEach(burger => {
+      burger.addEventListener('click', () => {
+        burger.classList.toggle('is-active');
+        document.querySelector('.navbar-menu').classList.toggle('is-active');
+      });
+    });
+  });
+</script>
+
 </html>

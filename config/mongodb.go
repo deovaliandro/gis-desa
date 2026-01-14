@@ -15,6 +15,7 @@ var (
 )
 
 var UserCollection *mongo.Collection
+var MapCollection *mongo.Collection
 
 func ConnectMongo() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -32,6 +33,8 @@ func ConnectMongo() error {
 	DesaCollection = Database.Collection("desa")
 
 	UserCollection = Database.Collection("users")
+
+	MapCollection = Database.Collection("maps")
 
 	return nil
 }

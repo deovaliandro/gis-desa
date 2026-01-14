@@ -39,6 +39,18 @@ func Setup(r *gin.Engine) {
 		admin.GET("/users", controllers.UserList)
 		admin.POST("/users", controllers.UserCreate)
 	}
+
+	// MAP CATALOG (LOGIN REQUIRED)
+	maps := r.Group("/admin/maps")
+	maps.Use(middleware.RequireLogin(), middleware.RequireAdmin())
+	{
+		maps.GET("", controllers.MapList)
+
+		// edit (admin & user)
+		maps.GET("/:id/edit", controllers.MapEditPage)
+		maps.POST("/:id/edit", controllers.MapUpdate)
+	}
+
 }
 
 func mapPage(c *gin.Context) {

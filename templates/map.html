@@ -49,6 +49,10 @@
         <strong>GIS Sulawesi Barat</strong>
       </a>
 
+      <div class="navbar-item has-text-weight-semibold">
+        {{ .mapTitle }}
+      </div>
+
       <!-- burger (mobile) -->
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>
@@ -81,13 +85,6 @@
       </div>
     </div>
   </nav>
-
-  <!-- ===================== -->
-  <!-- MAP -->
-  <!-- ===================== -->
-  <p class="has-text-grey-light ml-3">
-    Jenis Peta: {{ .mapType }}
-  </p>
 
   <div id="map"></div>
 

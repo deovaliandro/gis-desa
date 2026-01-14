@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <title>Edit Jenis Peta</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+
+      <h1 class="title">Edit Jenis Peta</h1>
+      <form method="POST" enctype="multipart/form-data">
+
+        <div class="field">
+          <label class="label">Judul</label>
+          <input class="input" name="title" value="{{ .map.Title }}">
+        </div>
+
+        <div class="field">
+          <label class="label">Deskripsi</label>
+          <textarea class="textarea" name="description">{{ .map.Description }}</textarea>
+        </div>
+
+        <div class="field">
+          <label class="label">Gambar Peta</label>
+
+          {{ if .map.Image }}
+          <figure class="image is-4by3 mb-2">
+            <img src="{{ .map.Image }}">
+          </figure>
+          {{ end }}
+
+          <input class="input" type="file" name="image" accept="image/*">
+          <p class="help">Kosongkan jika tidak ingin mengganti gambar</p>
+        </div>
+
+
+        <div class="field">
+          <label class="checkbox">
+            <input type="checkbox" name="is_active" {{ if .map.IsActive }}checked{{ end }}>
+            Aktif
+          </label>
+        </div>
+
+        <div class="field mt-4">
+          <button class="button is-primary">Simpan</button>
+          <a href="/admin/maps" class="button is-light">Kembali</a>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+</body>
+
+</html>

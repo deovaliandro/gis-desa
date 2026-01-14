@@ -24,6 +24,7 @@ func main() {
 	}
 
 	r := gin.Default()
+	r.Static("/static", "./static")
 
 	store := cookie.NewStore([]byte("hahahahaha"))
 	r.Use(sessions.Sessions("gisdesa_session", store))

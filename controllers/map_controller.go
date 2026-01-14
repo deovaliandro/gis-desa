@@ -110,10 +110,25 @@ func GetMap(c *gin.Context) {
 // HALAMAN MAP BERDASARKAN JENIS
 // ==========================
 func MapByType(c *gin.Context) {
-	mapType := c.Param("type")
+	code := c.Param("type")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var mapMeta models.MapCatalog
+	err := config.MapCollection.FindOne(
+		ctx,
+		bson.M{"code": code, "is_active": true},
+	).Decode(&mapMeta)
+
+	if err != nil {
+		c.String(404, "Jenis peta tidak ditemukan")
+		return
+	}
 
 	c.HTML(200, "map.html", gin.H{
 		"isLoggedIn": false,
-		"mapType":    mapType,
+		"mapType":    mapMeta.Code,
+		"mapTitle":   mapMeta.Title,
 	})
 }
