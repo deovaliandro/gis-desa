@@ -15,9 +15,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// ==========================
-// ADMIN: LIST DESA
-// ==========================
 func AdminDesaList(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -95,9 +92,6 @@ func AdminDesaList(c *gin.Context) {
 
 }
 
-// ==========================
-// ADMIN: EDIT PAGE
-// ==========================
 func AdminDesaEditPage(c *gin.Context) {
 	session := sessions.Default(c)
 	kdepum := c.Param("kdepum")
@@ -126,9 +120,6 @@ func AdminDesaEditPage(c *gin.Context) {
 
 }
 
-// ==========================
-// ADMIN: UPDATE DATA
-// ==========================
 func AdminDesaUpdate(c *gin.Context) {
 	kdepum := c.Param("kdepum")
 	pendidikan, _ := strconv.Atoi(c.PostForm("TINGKAT_PENDIDIKAN"))

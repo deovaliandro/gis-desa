@@ -38,7 +38,6 @@ func ConnectMongo() error {
 	MongoClient = client
 	Database = client.Database(dbName)
 
-	// Collections
 	DesaCollection = Database.Collection("desa")
 	UserCollection = Database.Collection("users")
 	MapCollection = Database.Collection("maps")

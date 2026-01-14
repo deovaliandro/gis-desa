@@ -52,9 +52,6 @@ func UserCreate(c *gin.Context) {
 func UserDelete(c *gin.Context) {
 	idHex := c.Param("id")
 
-	// ==========================
-	// VALIDASI OBJECT ID
-	// ==========================
 	userID, err := primitive.ObjectIDFromHex(idHex)
 	if err != nil {
 		c.String(400, "ID user tidak valid")
@@ -63,9 +60,6 @@ func UserDelete(c *gin.Context) {
 
 	ctx := context.Background()
 
-	// ==========================
-	// AMBIL DATA USER TARGET
-	// ==========================
 	var targetUser models.User
 	err = config.UserCollection.
 		FindOne(ctx, bson.M{"_id": userID}).
@@ -76,18 +70,12 @@ func UserDelete(c *gin.Context) {
 		return
 	}
 
-	// ==========================
-	// CEGAH HAPUS DIRI SENDIRI
-	// ==========================
 	session := sessions.Default(c)
 	if session.Get("user_id") == targetUser.ID.Hex() {
 		c.String(400, "Tidak boleh menghapus akun sendiri")
 		return
 	}
 
-	// ==========================
-	// CEGAH HAPUS ADMIN TERAKHIR
-	// ==========================
 	if targetUser.Role == "admin" {
 		adminCount, err := config.UserCollection.CountDocuments(
 			ctx,
@@ -105,9 +93,6 @@ func UserDelete(c *gin.Context) {
 		}
 	}
 
-	// ==========================
-	// DELETE USER
-	// ==========================
 	_, err = config.UserCollection.DeleteOne(
 		ctx,
 		bson.M{"_id": targetUser.ID},

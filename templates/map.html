@@ -2,7 +2,6 @@
 <section class="py-8">
   <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <!-- MAP -->
     <div class="lg:col-span-1 bg-white rounded-xl shadow-sm overflow-hidden">
       <div class="px-4 py-3 border-b font-semibold">
         {{ .mapTitle }}
@@ -10,7 +9,6 @@
       <div id="map" class="h-[520px]"></div>
     </div>
 
-    <!-- INTERPRETASI -->
     <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-5 text-sm space-y-4">
       <h3 class="font-semibold text-base">Interpretasi</h3>
 
@@ -43,9 +41,6 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  /* ===============================
-     1. INIT MAP
-     =============================== */
   const map = L.map('map', {
     minZoom: 8,
     maxZoom: 15,
@@ -107,9 +102,6 @@
     }
   }
 
-  /* ===============================
-     3. LOAD DATA → CENTER OTOMATIS
-     =============================== */
   fetch('/api/map')
     .then(res => res.json())
     .then(data => {
@@ -118,20 +110,17 @@
         onEachFeature: onEachDesa
       }).addTo(map);
 
-      // 1️⃣ Pastikan semua wilayah masuk
       map.fitBounds(geojson.getBounds(), {
         padding: [40, 40],
         animate: false
       });
 
-      // 2️⃣ PAKSA titik tengah sesuai permintaan
       map.setView(
         [-2.209078, 119.402847],
-        map.getZoom(),   // pertahankan zoom hasil fitBounds
+        map.getZoom(),
         { animate: false }
       );
 
-      // 3️⃣ Sinkronisasi ukuran (wajib untuk card)
       setTimeout(() => {
         map.invalidateSize();
       }, 200);

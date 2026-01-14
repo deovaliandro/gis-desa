@@ -14,14 +14,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-// ==========================
-// API: GEOJSON + PENDIDIKAN
-// ==========================
 func GetMap(c *gin.Context) {
 
-	// ==========================
-	// 1. VALIDASI GEOJSON
-	// ==========================
 	if data.GeoData == nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "GeoJSON belum dimuat",
@@ -45,9 +39,6 @@ func GetMap(c *gin.Context) {
 		return
 	}
 
-	// ==========================
-	// 2. AMBIL DATA DESA (MONGO)
-	// ==========================
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
@@ -60,7 +51,6 @@ func GetMap(c *gin.Context) {
 	}
 	defer cursor.Close(ctx)
 
-	// Map KDEPUM → Desa
 	desaMap := make(map[string]models.Desa)
 
 	for cursor.Next(ctx) {
@@ -70,9 +60,6 @@ func GetMap(c *gin.Context) {
 		}
 	}
 
-	// ==========================
-	// 3. GABUNGKAN KE GEOJSON
-	// ==========================
 	for _, f := range features {
 
 		feature, ok := f.(map[string]interface{})
@@ -98,18 +85,12 @@ func GetMap(c *gin.Context) {
 		}
 	}
 
-	// ==========================
-	// 4. KIRIM KE CLIENT
-	// ==========================
 	c.JSON(http.StatusOK, gin.H{
 		"type":     "FeatureCollection",
 		"features": features,
 	})
 }
 
-// ==========================
-// HALAMAN MAP BERDASARKAN JENIS
-// ==========================
 func MapByType(c *gin.Context) {
 	code := c.Param("type")
 	session := sessions.Default(c)

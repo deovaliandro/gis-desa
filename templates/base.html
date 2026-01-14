@@ -7,7 +7,7 @@
   <title>{{ .title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Tailwind CSS (build) -->
+  <!-- Tailwind CSS -->
   <link rel="stylesheet" href="/static/css/app.css">
 
   <!-- Leaflet -->
@@ -38,14 +38,14 @@
 
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- NAVBAR -->
+  <!-- navbar -->
   {{ if eq .Layout "admin" }}
   {{ template "navbar_admin" . }}
   {{ else }}
   {{ template "navbar_public" . }}
   {{ end }}
 
-  <!-- CONTENT -->
+  <!-- content -->
   <main class="flex-1">
     {{ if eq .Page "home" }}
     {{ template "home-page" . }}
@@ -72,7 +72,7 @@
     {{ end }}
   </main>
 
-  <!-- FOOTER -->
+  <!-- footer -->
   {{ template "footer" . }}
 
 </body>

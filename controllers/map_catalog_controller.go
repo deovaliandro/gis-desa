@@ -14,9 +14,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// ==========================
-// LIST MAP (ADMIN & USER)
-// ==========================
 func MapList(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -50,9 +47,6 @@ func MapList(c *gin.Context) {
 
 }
 
-// ==========================
-// EDIT PAGE (ADMIN & USER)
-// ==========================
 func MapEditPage(c *gin.Context) {
 	session := sessions.Default(c)
 	id, _ := primitive.ObjectIDFromHex(c.Param("id"))
@@ -82,16 +76,10 @@ func MapEditPage(c *gin.Context) {
 
 }
 
-// ==========================
-// UPDATE MAP (ADMIN & USER)
-// ==========================
 func MapUpdate(c *gin.Context) {
 	id, _ := primitive.ObjectIDFromHex(c.Param("id"))
 	newCode := c.PostForm("code")
 
-	// ==========================
-	// VALIDASI CODE UNIK
-	// ==========================
 	if newCode != "" {
 		count, _ := config.MapCollection.CountDocuments(
 			context.Background(),
@@ -116,9 +104,6 @@ func MapUpdate(c *gin.Context) {
 		},
 	}
 
-	// ==========================
-	// HANDLE IMAGE UPLOAD
-	// ==========================
 	file, err := c.FormFile("image")
 	if err == nil {
 		ext := filepath.Ext(file.Filename)

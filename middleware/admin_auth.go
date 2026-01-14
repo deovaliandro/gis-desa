@@ -16,7 +16,6 @@ func AdminAuth() gin.HandlerFunc {
 			return
 		}
 
-		// tandai login untuk navbar
 		c.Set("isLoggedIn", true)
 		c.Next()
 	}

@@ -6,6 +6,6 @@ type User struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty"`
 	Name     string             `bson:"name"`
 	Username string             `bson:"username"`
-	Password string             `bson:"password"` // hash
-	Role     string             `bson:"role"`     // admin | user
+	Password string             `bson:"password"`
+	Role     string             `bson:"role"`
 }
