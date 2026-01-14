@@ -126,8 +126,9 @@ func MapByType(c *gin.Context) {
 		return
 	}
 
-	c.HTML(200, "map.html", gin.H{
+	c.HTML(200, "base", gin.H{
 		"isLoggedIn": false,
+		"Page":       "map",
 		"mapType":    mapMeta.Code,
 		"mapTitle":   mapMeta.Title,
 	})

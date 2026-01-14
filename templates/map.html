@@ -1,206 +1,164 @@
-{{ define "map.html" }}
-<!DOCTYPE html>
-<html lang="id">
+{{ define "map-page" }}
+<section class="section">
+  <div class="container is-fluid">
 
-<head>
-  <meta charset="utf-8" />
-  <title>Peta Desa Sulawesi Barat</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Bulma CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-  <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Navbar height Bulma ≈ 3.25rem */
-    #map {
-      flex: 1;
-      width: 100%;
-    }
-
-    .leaflet-container {
-      background: #f8f9fa;
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- ===================== -->
-  <!-- NAVBAR (BULMA) -->
-  <!-- ===================== -->
-  <nav class="navbar is-dark" role="navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item" href="/">
-        <strong>GIS Sulawesi Barat</strong>
-      </a>
-
-      <div class="navbar-item has-text-weight-semibold">
-        {{ .mapTitle }}
+    <div class="columns">
+      <div class="column is-8">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">{{ .mapTitle }}</p>
+          </header>
+          <div class="card-content">
+            <div id="map" style="height:520px"></div>
+          </div>
+        </div>
       </div>
 
-      <!-- burger (mobile) -->
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
+      <div class="column is-4">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">Interpretasi</p>
+          </header>
+          <div class="card-content content">
 
-    <div class="navbar-menu">
-      <div class="navbar-end">
-        {{ if .isLoggedIn }}
-        <div class="navbar-item">
-          <a href="/admin/desa" class="has-text-weight-semibold has-text-white">
-            {{ .name }}
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a href="/logout" class="button is-danger is-light">
-            Logout
-          </a>
-        </div>
-        {{ else }}
+            <p>
+              Peta ini menampilkan <strong>tingkat pendidikan rata-rata desa</strong>
+              di Provinsi Sulawesi Barat.
+            </p>
 
-        <div class="navbar-item">
-          <a href="/login" class="button is-primary">
-            Login
-          </a>
+            <p>
+              Interpretasi warna:
+            </p>
+
+            <ul>
+              <li><strong>Warna gelap</strong> → tingkat pendidikan rendah</li>
+              <li><strong>Warna cerah</strong> → tingkat pendidikan tinggi</li>
+            </ul>
+
+            <p>
+              Skala tingkat pendidikan:
+            </p>
+
+            <ol>
+              <li>Tidak sekolah</li>
+              <li>PAUD / TK</li>
+              <li>Tamat SD</li>
+              <li>Tamat SMP</li>
+              <li>Tamat SMA / SMK</li>
+              <li>Diploma (D1-D3)</li>
+              <li>Sarjana (S1)</li>
+              <li>Magister (S2)</li>
+              <li>Doktor (S3)</li>
+            </ol>
+
+            <!-- OPSIONAL: GAMBAR LEGEN -->
+            <!--
+            <figure class="image is-4by3">
+              <img src="/static/maps/legend_pendidikan.png" alt="Legenda">
+            </figure>
+            -->
+
+          </div>
         </div>
-        {{ end }}
+
       </div>
+
     </div>
-  </nav>
 
-  <div id="map"></div>
+  </div>
+</section>
 
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-  </script>
+<!-- ===================== -->
+<!-- LEAFLET JS -->
+<!-- ===================== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Navbar burger (Bulma JS ringan) -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const burgers = Array.from(document.querySelectorAll('.navbar-burger'));
-      burgers.forEach(burger => {
-        burger.addEventListener('click', () => {
-          burger.classList.toggle('is-active');
-          document.querySelector('.navbar-menu').classList.toggle('is-active');
-        });
+<!-- ===================== -->
+<!-- BULMA BURGER -->
+<!-- ===================== -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const burgers = document.querySelectorAll('.navbar-burger');
+    burgers.forEach(burger => {
+      burger.addEventListener('click', () => {
+        const target = document.getElementById(burger.dataset.target);
+        burger.classList.toggle('is-active');
+        target.classList.toggle('is-active');
       });
     });
-  </script>
+  });
+</script>
 
-  <script>
-    // ============================
-    // 1. BATAS WILAYAH SULBAR
-    // ============================
-    const sulbarBounds = L.latLngBounds(
-      L.latLng(-3.60, 118.60),
-      L.latLng(-1.40, 120.20)
-    );
+<!-- ===================== -->
+<!-- MAP SCRIPT -->
+<!-- ===================== -->
+<script>
+  const sulbarBounds = L.latLngBounds(
+    L.latLng(-3.60, 118.60),
+    L.latLng(-1.40, 120.20)
+  );
 
-    // ============================
-    // 2. INISIALISASI MAP
-    // ============================
-    const map = L.map('map', {
-      center: [-2.5, 119.3],
-      zoom: 9,
-      minZoom: 8,
-      maxZoom: 15,
-      maxBounds: sulbarBounds,
-      maxBoundsViscosity: 1.0
+  const map = L.map('map', {
+    center: [-2.5, 119.3],
+    zoom: 9,
+    minZoom: 8,
+    maxZoom: 15,
+    maxBounds: sulbarBounds,
+    maxBoundsViscosity: 1.0
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  function getColor(v) {
+    return v >= 9 ? '#ffffcc' :
+      v >= 8 ? '#c7e9b4' :
+        v >= 7 ? '#7fcdbb' :
+          v >= 6 ? '#41b6c4' :
+            v >= 5 ? '#1d91c0' :
+              v >= 4 ? '#225ea8' :
+                v >= 3 ? '#253494' :
+                  v >= 2 ? '#2c2c84' :
+                    v >= 1 ? '#081d58' :
+                      '#ffffff';
+  }
+
+  function styleDesa(feature) {
+    const v = feature.properties.TINGKAT_PENDIDIKAN || 0;
+    return {
+      color: '#555',
+      weight: 1,
+      fillColor: getColor(v),
+      fillOpacity: 0.7
+    };
+  }
+
+  function onEachDesa(feature, layer) {
+    if (feature.properties) {
+      let popup = `<strong>${feature.properties.NAMOBJ}</strong><br>`;
+      popup += `Tingkat Pendidikan: ${feature.properties.TINGKAT_PENDIDIKAN}`;
+      layer.bindPopup(popup);
+    }
+
+    layer.on({
+      mouseover: e => e.target.setStyle({ weight: 2 }),
+      mouseout: e => geojson.resetStyle(e.target)
     });
+  }
 
-    // ============================
-    // 3. BASEMAP
-    // ============================
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+  let geojson;
+  fetch('/api/map')
+    .then(res => res.json())
+    .then(data => {
+      geojson = L.geoJSON(data, {
+        style: styleDesa,
+        onEachFeature: onEachDesa
+      }).addTo(map);
 
-    // ============================
-    // 4. STYLE DESA
-    // ============================
-    function styleDesa(feature) {
-      const v = feature.properties.TINGKAT_PENDIDIKAN || 0;
+      map.fitBounds(geojson.getBounds());
+    })
+    .catch(err => console.error(err));
+</script>
 
-      return {
-        color: '#555',
-        weight: 1,
-        fillColor: getColor(v),
-        fillOpacity: 0.7
-      };
-    }
-
-
-    // ============================
-    // 5. INTERAKSI DESA
-    // ============================
-    function onEachDesa(feature, layer) {
-      if (feature.properties) {
-        let popupContent = `<strong>Desa</strong> ${feature.properties.NAMOBJ}<br>`;
-        popupContent += `<strong>Tingkat Pendidikan:</strong> ${feature.properties.TINGKAT_PENDIDIKAN}<br>`;
-        // for (const key in feature.properties) {
-        //   popupContent += `${key}: ${feature.properties[key]}<br>`;
-        // }
-        layer.bindPopup(popupContent);
-      }
-
-      layer.on({
-        mouseover: e => e.target.setStyle({ weight: 2, fillOpacity: 0.7 }),
-        mouseout: e => geojson.resetStyle(e.target)
-      });
-    }
-
-    // ============================
-    // 6. LOAD GEOJSON
-    // ============================
-    let geojson;
-
-    fetch('/api/map')
-      .then(res => res.json())
-      .then(data => {
-        geojson = L.geoJSON(data, {
-          style: styleDesa,
-          onEachFeature: onEachDesa
-        }).addTo(map);
-
-        map.fitBounds(geojson.getBounds());
-      })
-      .catch(err => console.error('Gagal memuat GeoJSON:', err));
-
-
-    function getColor(v) {
-      return v >= 9 ? '#ffffcc' :
-        v >= 8 ? '#c7e9b4' :
-          v >= 7 ? '#7fcdbb' :
-            v >= 6 ? '#41b6c4' :
-              v >= 5 ? '#1d91c0' :
-                v >= 4 ? '#225ea8' :
-                  v >= 3 ? '#253494' :
-                    v >= 2 ? '#2c2c84' :
-                      v >= 1 ? '#081d58' :
-                        'white';
-    }
-
-  </script>
-
-</body>
-
-</html>
 {{ end }}

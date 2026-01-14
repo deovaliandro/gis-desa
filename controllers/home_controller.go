@@ -39,7 +39,9 @@ func HomePage(c *gin.Context) {
 		return
 	}
 
-	c.HTML(200, "home.html", gin.H{
+	c.HTML(200, "base", gin.H{
+		"title":      "GIS Sulawesi Barat",
+		"Page":       "home",
 		"maps":       maps,
 		"isLoggedIn": session.Get("user_id") != nil,
 		"name":       session.Get("name"),
