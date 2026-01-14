@@ -50,6 +50,7 @@ func Setup(r *gin.Engine) {
 		// Manajemen user
 		admin.GET("/users", controllers.UserList)
 		admin.POST("/users", controllers.UserCreate)
+		admin.POST("/users/:id/delete", controllers.UserDelete)
 
 		// Manajemen jenis peta (lihat & edit saja)
 		admin.GET("/maps", controllers.MapList)

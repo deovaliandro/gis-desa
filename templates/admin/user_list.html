@@ -4,16 +4,13 @@
 
     <!-- FORM TAMBAH USER -->
     <form method="POST" action="/admin/users"
-          class="bg-white rounded-xl shadow-sm p-6 grid grid-cols-1 md:grid-cols-5 gap-4">
+      class="bg-white rounded-xl shadow-sm p-6 grid grid-cols-1 md:grid-cols-5 gap-4">
 
-      <input name="name" placeholder="Nama"
-             class="px-4 py-2 border rounded-md" required>
+      <input name="name" placeholder="Nama" class="px-4 py-2 border rounded-md" required>
 
-      <input name="username" placeholder="Username"
-             class="px-4 py-2 border rounded-md" required>
+      <input name="username" placeholder="Username" class="px-4 py-2 border rounded-md" required>
 
-      <input type="password" name="password" placeholder="Password"
-             class="px-4 py-2 border rounded-md" required>
+      <input type="password" name="password" placeholder="Password" class="px-4 py-2 border rounded-md" required>
 
       <select name="role" class="px-4 py-2 border rounded-md">
         <option value="user">User</option>
@@ -34,6 +31,7 @@
             <th class="px-4 py-2 text-left">Nama</th>
             <th class="px-4 py-2 text-left">Username</th>
             <th class="px-4 py-2 text-center">Role</th>
+            <th class="px-4 py-2 text-center">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -43,14 +41,22 @@
             <td class="px-4 py-2">{{ .Username }}</td>
             <td class="px-4 py-2 text-center">
               {{ if eq .Role "admin" }}
-                <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">
-                  Admin
-                </span>
+              <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">
+                Admin
+              </span>
               {{ else }}
-                <span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">
-                  User
-                </span>
+              <span class="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">
+                User
+              </span>
               {{ end }}
+            </td>
+            <td>
+              <form method="POST" action="/admin/users/{{ .ID.Hex }}/delete"
+                onsubmit="return confirm('Hapus user ini?')" style="display:inline">
+                <button class="button is-danger">
+                  Hapus
+                </button>
+              </form>
             </td>
           </tr>
           {{ else }}

@@ -44,6 +44,8 @@ func main() {
 	r := gin.Default()
 	r.Static("/static", "./static")
 
+	r.SetTrustedProxies(nil)
+
 	// =========================
 	// SESSION (FROM ENV)
 	// =========================

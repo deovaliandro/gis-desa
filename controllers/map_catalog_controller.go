@@ -87,9 +87,29 @@ func MapEditPage(c *gin.Context) {
 // ==========================
 func MapUpdate(c *gin.Context) {
 	id, _ := primitive.ObjectIDFromHex(c.Param("id"))
+	newCode := c.PostForm("code")
+
+	// ==========================
+	// VALIDASI CODE UNIK
+	// ==========================
+	if newCode != "" {
+		count, _ := config.MapCollection.CountDocuments(
+			context.Background(),
+			bson.M{
+				"code": newCode,
+				"_id":  bson.M{"$ne": id},
+			},
+		)
+
+		if count > 0 {
+			c.String(400, "Kode peta sudah digunakan")
+			return
+		}
+	}
 
 	update := bson.M{
 		"$set": bson.M{
+			"code":        newCode,
 			"title":       c.PostForm("title"),
 			"description": c.PostForm("description"),
 			"is_active":   c.PostForm("is_active") == "on",

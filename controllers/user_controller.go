@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -43,6 +45,78 @@ func UserCreate(c *gin.Context) {
 		Password: string(hash),
 		Role:     c.PostForm("role"), // admin / user
 	})
+
+	c.Redirect(302, "/admin/users")
+}
+
+func UserDelete(c *gin.Context) {
+	idHex := c.Param("id")
+
+	// ==========================
+	// VALIDASI OBJECT ID
+	// ==========================
+	userID, err := primitive.ObjectIDFromHex(idHex)
+	if err != nil {
+		c.String(400, "ID user tidak valid")
+		return
+	}
+
+	ctx := context.Background()
+
+	// ==========================
+	// AMBIL DATA USER TARGET
+	// ==========================
+	var targetUser models.User
+	err = config.UserCollection.
+		FindOne(ctx, bson.M{"_id": userID}).
+		Decode(&targetUser)
+
+	if err != nil {
+		c.String(404, "User tidak ditemukan")
+		return
+	}
+
+	// ==========================
+	// CEGAH HAPUS DIRI SENDIRI
+	// ==========================
+	session := sessions.Default(c)
+	if session.Get("user_id") == targetUser.ID.Hex() {
+		c.String(400, "Tidak boleh menghapus akun sendiri")
+		return
+	}
+
+	// ==========================
+	// CEGAH HAPUS ADMIN TERAKHIR
+	// ==========================
+	if targetUser.Role == "admin" {
+		adminCount, err := config.UserCollection.CountDocuments(
+			ctx,
+			bson.M{"role": "admin"},
+		)
+
+		if err != nil {
+			c.String(500, err.Error())
+			return
+		}
+
+		if adminCount <= 1 {
+			c.String(400, "Minimal harus ada satu admin di sistem")
+			return
+		}
+	}
+
+	// ==========================
+	// DELETE USER
+	// ==========================
+	_, err = config.UserCollection.DeleteOne(
+		ctx,
+		bson.M{"_id": targetUser.ID},
+	)
+
+	if err != nil {
+		c.String(500, err.Error())
+		return
+	}
 
 	c.Redirect(302, "/admin/users")
 }

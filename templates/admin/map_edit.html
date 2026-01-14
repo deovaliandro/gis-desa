@@ -6,40 +6,42 @@
       Edit Jenis Peta
     </h1>
 
-    <form method="POST" enctype="multipart/form-data"
-          class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+    <form method="POST" enctype="multipart/form-data" class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+
+      <div>
+        <label class="block text-sm mb-1">Kode Peta (URL)</label>
+        <input class="w-full px-4 py-2 border rounded-md" name="code" value="{{ .map.Code }}" required pattern="[a-z0-9\-]+">
+        <p class="help">
+          Digunakan sebagai URL: <code>/map/kode-peta</code>
+        </p>
+      </div>
 
       <div>
         <label class="block text-sm mb-1">Judul</label>
-        <input name="title" value="{{ .map.Title }}"
-               class="w-full px-4 py-2 border rounded-md">
+        <input name="title" value="{{ .map.Title }}" class="w-full px-4 py-2 border rounded-md">
       </div>
 
       <div>
         <label class="block text-sm mb-1">Deskripsi</label>
-        <textarea name="description"
-                  class="w-full px-4 py-2 border rounded-md"
-                  rows="4">{{ .map.Description }}</textarea>
+        <textarea name="description" class="w-full px-4 py-2 border rounded-md"
+          rows="4">{{ .map.Description }}</textarea>
       </div>
 
       <div>
         <label class="block text-sm mb-1">Gambar Peta</label>
 
         {{ if .map.Image }}
-        <img src="{{ .map.Image }}"
-             class="mb-2 rounded-md max-h-48">
+        <img src="{{ .map.Image }}" class="mb-2 rounded-md max-h-48">
         {{ end }}
 
-        <input type="file" name="image" accept="image/*"
-               class="w-full text-sm">
+        <input type="file" name="image" accept="image/*" class="w-full text-sm">
         <p class="text-xs text-slate-500">
           Kosongkan jika tidak ingin mengganti gambar
         </p>
       </div>
 
       <div class="flex items-center gap-2">
-        <input type="checkbox" name="is_active"
-               {{ if .map.IsActive }}checked{{ end }}>
+        <input type="checkbox" name="is_active" {{ if .map.IsActive }}checked{{ end }}>
         <span class="text-sm">Aktif</span>
       </div>
 
@@ -47,8 +49,7 @@
         <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
           Simpan
         </button>
-        <a href="/admin/maps"
-           class="px-4 py-2 border rounded-md hover:bg-slate-100">
+        <a href="/admin/maps" class="px-4 py-2 border rounded-md hover:bg-slate-100">
           Kembali
         </a>
       </div>
