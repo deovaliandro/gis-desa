@@ -77,11 +77,18 @@ func main() {
 	// =========================
 	// RUN SERVER
 	// =========================
-	port := os.Getenv("APP_PORT")
+
+	// untuk local
+	// port := os.Getenv("APP_PORT")
+	// if port == "" {
+	// 	port = "8080"
+	// }
+
+	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	log.Println("Server running on port", port)
+	// log.Println("Server running on port", port)
 	r.Run(":" + port)
 }
