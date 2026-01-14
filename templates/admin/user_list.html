@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <title>Manajemen User</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="level mb-5">
+        <div class="level-left">
+          <h1 class="title">Manajemen User</h1>
+        </div>
+        <div class="level-right">
+          <a href="/admin/desa" class="button is-light mr-2">
+            ← Desa
+          </a>
+          <a href="/logout" class="button is-danger is-light">
+            Logout
+          </a>
+        </div>
+      </div>
+
+
+      <!-- ========================= -->
+      <!-- FORM TAMBAH USER / ADMIN -->
+      <!-- ========================= -->
+      <div class="box mb-6">
+        <h2 class="subtitle">Tambah User / Admin</h2>
+
+        <form method="POST" action="/admin/users">
+          <div class="columns">
+            <div class="column">
+              <div class="field">
+                <label class="label">Nama</label>
+                <input class="input" name="name" required>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Username</label>
+                <input class="input" name="username" required>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Password</label>
+                <input type="password" class="input" name="password" required>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Role</label>
+                <div class="select is-fullwidth">
+                  <select name="role" required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="column is-narrow">
+              <div class="field mt-5">
+                <button class="button is-primary">
+                  Tambah
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- ========================= -->
+      <!-- TABLE USER -->
+      <!-- ========================= -->
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Username</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .users }}
+          <tr>
+            <td>{{ .Name }}</td>
+            <td>{{ .Username }}</td>
+            <td>
+              {{ if eq .Role "admin" }}
+              <span class="tag is-danger">Admin</span>
+              {{ else }}
+              <span class="tag is-info">User</span>
+              {{ end }}
+            </td>
+          </tr>
+          {{ else }}
+          <tr>
+            <td colspan="3" class="has-text-centered">
+              Belum ada user
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+
+    </div>
+  </section>
+
+</body>
+
+</html>

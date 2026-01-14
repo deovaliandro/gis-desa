@@ -1,0 +1,190 @@
+{{ define "map.html" }}
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Peta Desa Sulawesi Barat</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar height Bulma ≈ 3.25rem */
+    #map {
+      flex: 1;
+      width: 100%;
+    }
+
+    .leaflet-container {
+      background: #f8f9fa;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===================== -->
+  <!-- NAVBAR (BULMA) -->
+  <!-- ===================== -->
+  <nav class="navbar is-dark" role="navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">
+        <strong>GIS Sulawesi Barat</strong>
+      </a>
+
+      <!-- burger (mobile) -->
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        {{ if .isLoggedIn }}
+        <div class="navbar-item">
+          <a href="/admin/desa" class="has-text-weight-semibold has-text-white">
+            {{ .name }}
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a href="/logout" class="button is-danger is-light">
+            Logout
+          </a>
+        </div>
+        {{ else }}
+
+        <div class="navbar-item">
+          <a href="/login" class="button is-primary">
+            Login
+          </a>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== -->
+  <!-- MAP -->
+  <!-- ===================== -->
+  <p class="has-text-grey-light ml-3">
+    Jenis Peta: {{ .mapType }}
+  </p>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+  </script>
+
+  <!-- Navbar burger (Bulma JS ringan) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const burgers = Array.from(document.querySelectorAll('.navbar-burger'));
+      burgers.forEach(burger => {
+        burger.addEventListener('click', () => {
+          burger.classList.toggle('is-active');
+          document.querySelector('.navbar-menu').classList.toggle('is-active');
+        });
+      });
+    });
+  </script>
+
+  <script>
+    // ============================
+    // 1. BATAS WILAYAH SULBAR
+    // ============================
+    const sulbarBounds = L.latLngBounds(
+      L.latLng(-3.60, 118.60),
+      L.latLng(-1.40, 120.20)
+    );
+
+    // ============================
+    // 2. INISIALISASI MAP
+    // ============================
+    const map = L.map('map', {
+      center: [-2.5, 119.3],
+      zoom: 9,
+      minZoom: 8,
+      maxZoom: 15,
+      maxBounds: sulbarBounds,
+      maxBoundsViscosity: 1.0
+    });
+
+    // ============================
+    // 3. BASEMAP
+    // ============================
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // ============================
+    // 4. STYLE DESA
+    // ============================
+    function styleDesa(feature) {
+      return {
+        color: '#363636',
+        weight: 1,
+        fillColor: '#6baed6',
+        fillOpacity: 0.5
+      };
+    }
+
+    // ============================
+    // 5. INTERAKSI DESA
+    // ============================
+    function onEachDesa(feature, layer) {
+      if (feature.properties) {
+        let popupContent = '<strong>Desa</strong><br>';
+        for (const key in feature.properties) {
+          popupContent += `${key}: ${feature.properties[key]}<br>`;
+        }
+        layer.bindPopup(popupContent);
+      }
+
+      layer.on({
+        mouseover: e => e.target.setStyle({ weight: 2, fillOpacity: 0.7 }),
+        mouseout: e => geojson.resetStyle(e.target)
+      });
+    }
+
+    // ============================
+    // 6. LOAD GEOJSON
+    // ============================
+    let geojson;
+
+    fetch('/api/map')
+      .then(res => res.json())
+      .then(data => {
+        geojson = L.geoJSON(data, {
+          style: styleDesa,
+          onEachFeature: onEachDesa
+        }).addTo(map);
+
+        map.fitBounds(geojson.getBounds());
+      })
+      .catch(err => console.error('Gagal memuat GeoJSON:', err));
+  </script>
+
+</body>
+
+</html>
+{{ end }}

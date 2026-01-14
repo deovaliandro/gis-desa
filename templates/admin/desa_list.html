@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <title>Admin Desa – Sulawesi Barat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="level mb-4">
+        <div class="level-left">
+          <a href="/" class="button is-danger is-light mr-3">
+            Home
+          </a>
+
+          <h1 class="title">Daftar Desa Sulawesi Barat</h1>
+        </div>
+
+        <div class="level-right">
+          {{ if eq .role "admin" }}
+          <a href="/admin/users" class="button is-warning mr-2">
+            Manajemen User
+          </a>
+          {{ end }}
+
+          <a href="/logout" class="button is-danger is-light">
+            Logout
+          </a>
+        </div>
+      </div>
+      <!-- SEARCH -->
+      <form method="GET" class="mb-5">
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input class="input" type="text" name="q" placeholder="Cari desa / kecamatan / KDEPUM" value="{{ .query }}">
+          </div>
+          <div class="control">
+            <button class="button is-info">
+              Cari
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- TABLE -->
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>KDEPUM</th>
+            <th>Nama Desa</th>
+            <th>Kecamatan</th>
+            <th>Kabupaten</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .desa }}
+          <tr>
+            <td>{{ .KDEPUM }}</td>
+            <td>{{ .NAMOBJ }}</td>
+            <td>{{ .WADMKC }}</td>
+            <td>{{ .WADMKK }}</td>
+            <td>
+              <a href="/admin/desa/{{ .KDEPUM }}" class="button is-small is-info">
+                Edit
+              </a>
+            </td>
+          </tr>
+          {{ else }}
+          <tr>
+            <td colspan="5" class="has-text-centered">
+              Data tidak ditemukan
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+
+      <!-- PAGINATION -->
+      {{ if gt .totalPages 1 }}
+      <nav class="pagination is-centered mt-5" role="navigation">
+        {{ if .hasPrev }}
+        <a class="pagination-previous" href="/admin/desa?q={{ .query }}&page={{ .prevPage }}">
+          Sebelumnya
+        </a>
+        {{ else }}
+        <a class="pagination-previous" disabled>Sebelumnya</a>
+        {{ end }}
+
+        {{ if .hasNext }}
+        <a class="pagination-next" href="/admin/desa?q={{ .query }}&page={{ .nextPage }}">
+          Berikutnya
+        </a>
+        {{ else }}
+        <a class="pagination-next" disabled>Berikutnya</a>
+        {{ end }}
+
+        <ul class="pagination-list">
+          <li>
+            <span class="pagination-link is-current">
+              Halaman {{ .page }} / {{ .totalPages }}
+            </span>
+          </li>
+        </ul>
+      </nav>
+      {{ end }}
+
+    </div>
+  </section>
+
+</body>
+
+</html>
