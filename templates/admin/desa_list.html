@@ -1,84 +1,87 @@
 {{ define "admin/desa_list" }}
-  <section class="section">
-    <div class="container">
-      <!-- SEARCH -->
-      <form method="GET" class="mb-5">
-        <div class="field has-addons">
-          <div class="control is-expanded">
-            <input class="input" type="text" name="q" placeholder="Cari desa / kecamatan / KDEPUM" value="{{ .query }}">
-          </div>
-          <div class="control">
-            <button class="button is-info">
-              Cari
-            </button>
-          </div>
-        </div>
-      </form>
+<section class="py-8">
+  <div class="max-w-7xl mx-auto px-4">
 
-      <!-- TABLE -->
-      <table class="table is-fullwidth is-striped is-hoverable">
-        <thead>
+    <!-- SEARCH -->
+    <form method="GET" class="mb-6 flex gap-2">
+      <input type="text"
+             name="q"
+             placeholder="Cari desa / kecamatan / KDEPUM"
+             value="{{ .query }}"
+             class="flex-1 px-4 py-2 border rounded-md focus:ring focus:ring-blue-200">
+      <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Cari
+      </button>
+    </form>
+
+    <!-- TABLE -->
+    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-100">
           <tr>
-            <th>KDEPUM</th>
-            <th>Nama Desa</th>
-            <th>Kecamatan</th>
-            <th>Kabupaten</th>
-            <th>Aksi</th>
+            <th class="px-4 py-2 text-left">KDEPUM</th>
+            <th class="px-4 py-2 text-left">Nama Desa</th>
+            <th class="px-4 py-2 text-left">Kecamatan</th>
+            <th class="px-4 py-2 text-left">Kabupaten</th>
+            <th class="px-4 py-2 text-center">Aksi</th>
           </tr>
         </thead>
         <tbody>
           {{ range .desa }}
-          <tr>
-            <td>{{ .KDEPUM }}</td>
-            <td>{{ .NAMOBJ }}</td>
-            <td>{{ .WADMKC }}</td>
-            <td>{{ .WADMKK }}</td>
-            <td>
-              <a href="/admin/desa/{{ .KDEPUM }}" class="button is-small is-info">
+          <tr class="border-t hover:bg-slate-50">
+            <td class="px-4 py-2">{{ .KDEPUM }}</td>
+            <td class="px-4 py-2">{{ .NAMOBJ }}</td>
+            <td class="px-4 py-2">{{ .WADMKC }}</td>
+            <td class="px-4 py-2">{{ .WADMKK }}</td>
+            <td class="px-4 py-2 text-center">
+              <a href="/admin/desa/{{ .KDEPUM }}"
+                 class="text-blue-600 hover:underline">
                 Edit
               </a>
             </td>
           </tr>
           {{ else }}
           <tr>
-            <td colspan="5" class="has-text-centered">
+            <td colspan="5" class="px-4 py-6 text-center text-slate-500">
               Data tidak ditemukan
             </td>
           </tr>
           {{ end }}
         </tbody>
       </table>
+    </div>
 
-      <!-- PAGINATION -->
-      {{ if gt .totalPages 1 }}
-      <nav class="pagination is-centered mt-5" role="navigation">
-        {{ if .hasPrev }}
-        <a class="pagination-previous" href="/admin/desa?q={{ .query }}&page={{ .prevPage }}">
+    <!-- PAGINATION -->
+    {{ if gt .totalPages 1 }}
+    <div class="flex items-center justify-center gap-4 mt-6 text-sm">
+      {{ if .hasPrev }}
+        <a href="/admin/desa?q={{ .query }}&page={{ .prevPage }}"
+           class="px-3 py-1 border rounded hover:bg-slate-100">
           Sebelumnya
         </a>
-        {{ else }}
-        <a class="pagination-previous" disabled>Sebelumnya</a>
-        {{ end }}
-
-        {{ if .hasNext }}
-        <a class="pagination-next" href="/admin/desa?q={{ .query }}&page={{ .nextPage }}">
-          Berikutnya
-        </a>
-        {{ else }}
-        <a class="pagination-next" disabled>Berikutnya</a>
-        {{ end }}
-
-        <ul class="pagination-list">
-          <li>
-            <span class="pagination-link is-current">
-              Halaman {{ .page }} / {{ .totalPages }}
-            </span>
-          </li>
-        </ul>
-      </nav>
+      {{ else }}
+        <span class="px-3 py-1 border rounded text-slate-400">
+          Sebelumnya
+        </span>
       {{ end }}
 
-    </div>
-  </section>
+      <span class="text-slate-600">
+        Halaman {{ .page }} / {{ .totalPages }}
+      </span>
 
+      {{ if .hasNext }}
+        <a href="/admin/desa?q={{ .query }}&page={{ .nextPage }}"
+           class="px-3 py-1 border rounded hover:bg-slate-100">
+          Berikutnya
+        </a>
+      {{ else }}
+        <span class="px-3 py-1 border rounded text-slate-400">
+          Berikutnya
+        </span>
+      {{ end }}
+    </div>
+    {{ end }}
+
+  </div>
+</section>
 {{ end }}

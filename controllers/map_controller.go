@@ -9,6 +9,7 @@ import (
 	"gis-desa/data"
 	"gis-desa/models"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -111,6 +112,7 @@ func GetMap(c *gin.Context) {
 // ==========================
 func MapByType(c *gin.Context) {
 	code := c.Param("type")
+	session := sessions.Default(c)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -127,9 +129,13 @@ func MapByType(c *gin.Context) {
 	}
 
 	c.HTML(200, "base", gin.H{
-		"Layout":   "public",
-		"Page":     "map",
-		"mapType":  mapMeta.Code,
-		"mapTitle": mapMeta.Title,
+		"title":      mapMeta.Title,
+		"Layout":     "public",
+		"Page":       "map",
+		"mapType":    mapMeta.Code,
+		"mapTitle":   mapMeta.Title,
+		"isLoggedIn": session.Get("user_id") != nil,
+		"name":       session.Get("name"),
+		"role":       session.Get("role"),
 	})
 }

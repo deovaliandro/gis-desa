@@ -1,34 +1,41 @@
 {{ define "navbar_admin" }}
-<nav class="navbar is-dark">
-  <div class="navbar-brand">
-    <a class="navbar-item has-text-weight-semibold" href="/">
-      Admin GIS Sulbar
-    </a>
+<nav class="bg-slate-900 text-slate-100">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="h-16 flex items-center justify-between">
 
-    <a role="button" class="navbar-burger" data-target="navbarAdmin">
-      <span></span><span></span><span></span>
-    </a>
-  </div>
+      <!-- Brand -->
+      <a href="/" class="font-semibold text-lg">
+        Admin GIS Sulbar
+      </a>
 
-  <div id="navbarAdmin" class="navbar-menu">
-    <div class="navbar-start">
-      <a href="/admin/desa" class="navbar-item">Desa</a>
+      <!-- Menu -->
+      <div class="flex items-center gap-6 text-sm">
 
-      {{ if eq .role "admin" }}
-        <a href="/admin/maps" class="navbar-item">Peta</a>
-        <a href="/admin/users" class="navbar-item">User</a>
-      {{ end }}
-    </div>
+        <a href="/admin/desa" class="hover:text-white transition">
+          Desa
+        </a>
 
-    <div class="navbar-end">
-      <div class="navbar-item has-text-grey-light">
-        {{ .name }}
-      </div>
-      <div class="navbar-item">
-        <a href="/logout" class="button is-danger is-light">
+        {{ if eq .role "admin" }}
+        <a href="/admin/maps" class="hover:text-white transition">
+          Peta
+        </a>
+        <a href="/admin/users" class="hover:text-white transition">
+          User
+        </a>
+        {{ end }}
+
+        <div class="h-6 w-px bg-slate-600"></div>
+
+        <span class="text-slate-400">
+          {{ .name }}
+        </span>
+
+        <a href="/logout" class="px-4 py-2 rounded-md bg-red-600 text-white text-xs hover:bg-red-700 transition">
           Logout
         </a>
+
       </div>
+
     </div>
   </div>
 </nav>

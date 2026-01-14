@@ -1,49 +1,60 @@
 {{ define "admin/map_edit" }}
+<section class="py-8">
+  <div class="max-w-3xl mx-auto px-4">
 
-  <section class="section">
-    <div class="container">
+    <h1 class="text-xl font-semibold mb-6">
+      Edit Jenis Peta
+    </h1>
 
-      <h1 class="title">Edit Jenis Peta</h1>
-      <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data"
+          class="bg-white rounded-xl shadow-sm p-6 space-y-4">
 
-        <div class="field">
-          <label class="label">Judul</label>
-          <input class="input" name="title" value="{{ .map.Title }}">
-        </div>
+      <div>
+        <label class="block text-sm mb-1">Judul</label>
+        <input name="title" value="{{ .map.Title }}"
+               class="w-full px-4 py-2 border rounded-md">
+      </div>
 
-        <div class="field">
-          <label class="label">Deskripsi</label>
-          <textarea class="textarea" name="description">{{ .map.Description }}</textarea>
-        </div>
+      <div>
+        <label class="block text-sm mb-1">Deskripsi</label>
+        <textarea name="description"
+                  class="w-full px-4 py-2 border rounded-md"
+                  rows="4">{{ .map.Description }}</textarea>
+      </div>
 
-        <div class="field">
-          <label class="label">Gambar Peta</label>
+      <div>
+        <label class="block text-sm mb-1">Gambar Peta</label>
 
-          {{ if .map.Image }}
-          <figure class="image is-4by3 mb-2">
-            <img src="{{ .map.Image }}">
-          </figure>
-          {{ end }}
+        {{ if .map.Image }}
+        <img src="{{ .map.Image }}"
+             class="mb-2 rounded-md max-h-48">
+        {{ end }}
 
-          <input class="input" type="file" name="image" accept="image/*">
-          <p class="help">Kosongkan jika tidak ingin mengganti gambar</p>
-        </div>
+        <input type="file" name="image" accept="image/*"
+               class="w-full text-sm">
+        <p class="text-xs text-slate-500">
+          Kosongkan jika tidak ingin mengganti gambar
+        </p>
+      </div>
 
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="is_active"
+               {{ if .map.IsActive }}checked{{ end }}>
+        <span class="text-sm">Aktif</span>
+      </div>
 
-        <div class="field">
-          <label class="checkbox">
-            <input type="checkbox" name="is_active" {{ if .map.IsActive }}checked{{ end }}>
-            Aktif
-          </label>
-        </div>
+      <div class="flex gap-3 pt-4">
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+          Simpan
+        </button>
+        <a href="/admin/maps"
+           class="px-4 py-2 border rounded-md hover:bg-slate-100">
+          Kembali
+        </a>
+      </div>
 
-        <div class="field mt-4">
-          <button class="button is-primary">Simpan</button>
-          <a href="/admin/maps" class="button is-light">Kembali</a>
-        </div>
+    </form>
 
-      </form>
-    </div>
-  </section>
-
+  </div>
+</section>
 {{ end }}

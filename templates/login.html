@@ -3,45 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>Login Admin</title>
-
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/css/app.css">
 </head>
-<body>
 
-<section class="section">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-4">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center">
 
-        <h1 class="title has-text-centered">Admin Login</h1>
+<form method="POST" action="/login"
+      class="bg-white w-full max-w-sm p-8 rounded-xl shadow-sm">
 
-        <form method="POST" action="/login">
-          <div class="field">
-            <label class="label">Username</label>
-            <input class="input" name="username" required>
-          </div>
+  <h1 class="text-xl font-semibold mb-6 text-center">
+    Admin Login
+  </h1>
 
-          <div class="field">
-            <label class="label">Password</label>
-            <input type="password" class="input" name="password" required>
-          </div>
-
-          {{ if .error }}
-          <p class="has-text-danger">{{ .error }}</p>
-          {{ end }}
-
-          <div class="field mt-4">
-            <button class="button is-primary is-fullwidth">
-              Login
-            </button>
-          </div>
-        </form>
-
-      </div>
-    </div>
+  <div class="mb-4">
+    <label class="block text-sm mb-1">Username</label>
+    <input name="username"
+           required
+           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200">
   </div>
-</section>
+
+  <div class="mb-4">
+    <label class="block text-sm mb-1">Password</label>
+    <input type="password"
+           name="password"
+           required
+           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200">
+  </div>
+
+  {{ if .error }}
+  <p class="text-sm text-red-600 mb-3">
+    {{ .error }}
+  </p>
+  {{ end }}
+
+  <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
+    Login
+  </button>
+
+</form>
 
 </body>
 </html>

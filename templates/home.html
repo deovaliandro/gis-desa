@@ -1,30 +1,34 @@
 {{ define "home-page" }}
-<section class="section">
-  <div class="container">
+<section class="py-12">
+  <div class="max-w-7xl mx-auto px-4">
 
-    <h1 class="title has-text-centered mb-6">
+    <h1 class="text-3xl font-bold text-center mb-10">
       Sistem Informasi Geografis Sulawesi Barat
     </h1>
 
-    <div class="columns is-multiline">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {{ range .maps }}
-      <div class="column is-3">
-        <div class="card">
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img src="{{ .Image }}">
-            </figure>
-          </div>
-          <div class="card-content">
-            <p class="title is-6">{{ .Title }}</p>
-            <p class="content">{{ .Description }}</p>
-          </div>
-          <footer class="card-footer">
-            <a href="/map/{{ .Code }}" class="card-footer-item">
-              Buka Peta
-            </a>
-          </footer>
+      <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition overflow-hidden">
+
+        <img src="{{ .Image }}"
+             alt="{{ .Title }}"
+             class="h-40 w-full object-cover">
+
+        <div class="p-4">
+          <h3 class="font-semibold mb-2">
+            {{ .Title }}
+          </h3>
+
+          <p class="text-sm text-slate-600 mb-4">
+            {{ .Description }}
+          </p>
+
+          <a href="/map/{{ .Code }}"
+             class="text-sm font-medium text-blue-600 hover:underline">
+            Buka Peta →
+          </a>
         </div>
+
       </div>
       {{ end }}
     </div>

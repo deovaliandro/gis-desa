@@ -1,40 +1,45 @@
 {{ define "admin/map_list" }}
+<section class="py-8">
+  <div class="max-w-5xl mx-auto px-4">
 
-<section class="section">
-  <div class="container">
-    <table class="table is-fullwidth is-striped">
-      <thead>
-        <tr>
-          <th>Kode</th>
-          <th>Judul</th>
-          <th>Aktif</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{ range .maps }}
-        <tr>
-          <td>{{ .Code }}</td>
-          <td>{{ .Title }}</td>
-          <td>
-            {{ if .IsActive }}
-              <span class="tag is-success">Aktif</span>
-            {{ else }}
-              <span class="tag is-light">Nonaktif</span>
-            {{ end }}
-          </td>
-          <td>
-            <a href="/admin/maps/{{ .ID.Hex }}/edit"
-               class="button is-small is-info">
-              Edit
-            </a>
-          </td>
-        </tr>
-        {{ end }}
-      </tbody>
-    </table>
+    <div class="bg-white rounded-xl shadow-sm overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Kode</th>
+            <th class="px-4 py-2 text-left">Judul</th>
+            <th class="px-4 py-2 text-center">Status</th>
+            <th class="px-4 py-2 text-center">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range .maps }}
+          <tr class="border-t hover:bg-slate-50">
+            <td class="px-4 py-2">{{ .Code }}</td>
+            <td class="px-4 py-2">{{ .Title }}</td>
+            <td class="px-4 py-2 text-center">
+              {{ if .IsActive }}
+                <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">
+                  Aktif
+                </span>
+              {{ else }}
+                <span class="px-2 py-1 text-xs bg-slate-200 text-slate-600 rounded">
+                  Nonaktif
+                </span>
+              {{ end }}
+            </td>
+            <td class="px-4 py-2 text-center">
+              <a href="/admin/maps/{{ .ID.Hex }}/edit"
+                 class="text-blue-600 hover:underline">
+                Edit
+              </a>
+            </td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
 
   </div>
 </section>
-
 {{ end }}

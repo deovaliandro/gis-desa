@@ -1,31 +1,32 @@
 {{ define "navbar_public" }}
-<nav class="navbar is-danger is-light">
-  <div class="navbar-brand">
-    <a class="navbar-item has-text-weight-semibold" href="/">
-      GIS Sulawesi Barat
-    </a>
+<nav class="bg-white border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="h-16 flex items-center justify-between">
 
-    <a role="button" class="navbar-burger" data-target="navbarPublic">
-      <span></span><span></span><span></span>
-    </a>
-  </div>
+      <!-- Brand -->
+      <a href="/" class="font-semibold text-lg text-slate-800">
+        GIS Sulawesi Barat
+      </a>
 
-  <div id="navbarPublic" class="navbar-menu">
-    <div class="navbar-end">
-      {{ if .isLoggedIn }}
-        <div class="navbar-item">
-          <a href="/admin/desa" class="button is-warning">
-            Dashboard
-          </a>
-        </div>
-        <div class="navbar-item">
-          <a href="/logout" class="button is-light">Logout</a>
-        </div>
-      {{ else }}
-        <div class="navbar-item">
-          <a href="/login" class="button is-info">Login</a>
-        </div>
-      {{ end }}
+      <!-- Right Menu -->
+      <div class="flex items-center gap-4 text-sm">
+
+        {{ if .isLoggedIn }}
+        <a href="/admin/desa" class="px-4 py-2 rounded-md bg-amber-100 text-amber-700 hover:bg-amber-200 transition">
+          Dashboard
+        </a>
+
+        <a href="/logout" class="px-4 py-2 rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          Logout
+        </a>
+        {{ else }}
+        <a href="/login" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition">
+          Login
+        </a>
+        {{ end }}
+
+      </div>
+
     </div>
   </div>
 </nav>

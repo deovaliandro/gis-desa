@@ -1,0 +1,22 @@
+{
+  "name": "gis-desa",
+  "version": "1.0.0",
+  "description": "Sistem Informasi Geografis (SIG) Desa berbasis **Go (Gin Framework)** dan\r **MongoDB** untuk visualisasi peta tematik dan pengelolaan data desa di Provinsi\r Sulawesi Barat.",
+  "main": "postcss.config.js",
+  "scripts": {
+    "css:watch": "npx tailwindcss -i ./static/css/input.css -o ./static/css/app.css --watch",
+    "css:build": "npx tailwindcss -i ./static/css/input.css -o ./static/css/app.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.0.0"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/postcss": "^4.1.18"
+  }
+}
