@@ -21,41 +21,11 @@ Aplikasi ini mendukung:
 |Backend|Go (Gin Framework)|
 |Database|MongoDB|
 |Frontend|Go HTML Template|
-|CSS|Bulma|
+|CSS|Tailwind CSS|
+|Build CSS|Node.js 20|
 |Peta|Leaflet.js|
 |Session|gin-contrib/sessions|
 |Auth|Role-based (Admin & User)|
-
----
-
-## 📁 Struktur Direktori
-
-```text
-.
-├── controllers/
-├── middleware/
-├── models/
-├── routes/
-├── templates/
-│   ├── base.html
-│   ├── home.html
-│   ├── map.html
-│   ├── partials/
-│   │   ├── navbar.html
-│   │   └── footer.html
-│   └── admin/
-├── static/
-│   ├── favicon.ico
-│   └── maps/
-├── db-backup/
-│   ├── desa.json
-│   ├── users.json
-│   └── maps.json
-├── main.go
-├── go.mod
-├── go.sum
-└── README.md
-```
 
 ---
 
