@@ -73,7 +73,12 @@ func AdminDesaList(c *gin.Context) {
 
 	session := sessions.Default(c)
 
-	c.HTML(200, "desa_list.html", gin.H{
+	c.HTML(200, "base", gin.H{
+		"title":         "Admin Desa",
+		"Layout":        "admin",
+		"Page":          "admin",
+		"AdminTemplate": "admin/desa_list",
+
 		"desa":       desa,
 		"query":      search,
 		"page":       page,
@@ -82,15 +87,19 @@ func AdminDesaList(c *gin.Context) {
 		"hasNext":    page < totalPages,
 		"prevPage":   page - 1,
 		"nextPage":   page + 1,
+
 		"isLoggedIn": true,
+		"name":       session.Get("name"),
 		"role":       session.Get("role"),
 	})
+
 }
 
 // ==========================
 // ADMIN: EDIT PAGE
 // ==========================
 func AdminDesaEditPage(c *gin.Context) {
+	session := sessions.Default(c)
 	kdepum := c.Param("kdepum")
 
 	var desa models.Desa
@@ -103,10 +112,18 @@ func AdminDesaEditPage(c *gin.Context) {
 		return
 	}
 
-	c.HTML(200, "desa_edit.html", gin.H{
+	c.HTML(200, "base", gin.H{
+		"title":         "Edit Desa",
+		"Layout":        "admin",
+		"Page":          "admin",
+		"AdminTemplate": "admin/desa_edit",
+
 		"desa":       desa,
+		"name":       session.Get("name"),
+		"role":       session.Get("role"),
 		"isLoggedIn": true,
 	})
+
 }
 
 // ==========================

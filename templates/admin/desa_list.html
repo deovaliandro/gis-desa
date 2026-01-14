@@ -1,44 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-  <meta charset="utf-8">
-  <title>Admin Desa – Sulawesi Barat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-</head>
-
-<body>
-
+{{ define "admin/desa_list" }}
   <section class="section">
     <div class="container">
-
-      <div class="level mb-4">
-        <div class="level-left">
-          <a href="/" class="button is-danger is-light mr-3">
-            Home
-          </a>
-
-          <h1 class="title">Daftar Desa Sulawesi Barat</h1>
-        </div>
-
-        <div class="level-right">
-          {{ if eq .role "admin" }}
-          <a href="/admin/users" class="button is-warning mr-2">
-            Manajemen User
-          </a>
-
-          <a href="/admin/maps" class="button is-warning mr-2">
-            Manajemen Map
-          </a>
-          {{ end }}
-
-          <a href="/logout" class="button is-danger is-light">
-            Logout
-          </a>
-        </div>
-      </div>
       <!-- SEARCH -->
       <form method="GET" class="mb-5">
         <div class="field has-addons">
@@ -119,6 +81,4 @@
     </div>
   </section>
 
-</body>
-
-</html>
+{{ end }}

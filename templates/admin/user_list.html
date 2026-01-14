@@ -1,34 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-  <meta charset="utf-8">
-  <title>Manajemen User</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-</head>
-
-<body>
+{{ define "admin/user_list" }}
 
   <section class="section">
     <div class="container">
-
-      <div class="level mb-5">
-        <div class="level-left">
-          <h1 class="title">Manajemen User</h1>
-        </div>
-        <div class="level-right">
-          <a href="/admin/desa" class="button is-light mr-2">
-            ← Desa
-          </a>
-          <a href="/logout" class="button is-danger is-light">
-            Logout
-          </a>
-        </div>
-      </div>
-
-
       <!-- ========================= -->
       <!-- FORM TAMBAH USER / ADMIN -->
       <!-- ========================= -->
@@ -118,6 +91,4 @@
     </div>
   </section>
 
-</body>
-
-</html>
+{{ end }}

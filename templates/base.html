@@ -11,10 +11,17 @@
   <!-- Bulma CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
-  <!-- Leaflet CSS (aman walau tidak dipakai di semua halaman) -->
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-  <!-- favico -->
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/static/favicon/apple-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="/static/favicon/apple-icon-72x72.png">
@@ -29,27 +36,64 @@
   <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
   <link rel="manifest" href="/static/favicon/manifest.json">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
+
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+  </style>
 </head>
 
 <body>
 
   <!-- NAVBAR -->
-  {{ template "navbar" . }}
-
-  <!-- CONTENT -->
-  {{ if eq .Page "home" }}
-    {{ template "home-page" . }}
-  {{ else if eq .Page "map" }}
-    {{ template "map-page" . }}
+  {{ if eq .Layout "admin" }}
+    {{ template "navbar_admin" . }}
+  {{ else }}
+    {{ template "navbar_public" . }}
   {{ end }}
+<!-- CONTENT -->
+{{ if eq .Page "home" }}
+  {{ template "home-page" . }}
+
+{{ else if eq .Page "map" }}
+  {{ template "map-page" . }}
+
+{{ else if eq .Page "admin" }}
+
+  {{ if eq .AdminTemplate "admin/desa_list" }}
+    {{ template "admin/desa_list" . }}
+
+  {{ else if eq .AdminTemplate "admin/desa_edit" }}
+    {{ template "admin/desa_edit" . }}
+
+  {{ else if eq .AdminTemplate "admin/map_list" }}
+    {{ template "admin/map_list" . }}
+
+  {{ else if eq .AdminTemplate "admin/map_edit" }}
+    {{ template "admin/map_edit" . }}
+
+  {{ else if eq .AdminTemplate "admin/user_list" }}
+    {{ template "admin/user_list" . }}
+
+  {{ else }}
+    <section class="section">
+      <div class="container">
+        <p class="has-text-danger">
+          Admin template tidak dikenali
+        </p>
+      </div>
+    </section>
+  {{ end }}
+
+{{ end }}
+
 
   <!-- FOOTER -->
   {{ template "footer" . }}
 
-  <!-- Bulma burger JS -->
+  <!-- Bulma burger -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.navbar-burger').forEach(el => {
@@ -63,6 +107,5 @@
   </script>
 
 </body>
-
 </html>
 {{ end }}

@@ -1,0 +1,32 @@
+{{ define "navbar_public" }}
+<nav class="navbar is-danger is-light">
+  <div class="navbar-brand">
+    <a class="navbar-item has-text-weight-semibold" href="/">
+      GIS Sulawesi Barat
+    </a>
+
+    <a role="button" class="navbar-burger" data-target="navbarPublic">
+      <span></span><span></span><span></span>
+    </a>
+  </div>
+
+  <div id="navbarPublic" class="navbar-menu">
+    <div class="navbar-end">
+      {{ if .isLoggedIn }}
+        <div class="navbar-item">
+          <a href="/admin/desa" class="button is-warning">
+            Dashboard
+          </a>
+        </div>
+        <div class="navbar-item">
+          <a href="/logout" class="button is-light">Logout</a>
+        </div>
+      {{ else }}
+        <div class="navbar-item">
+          <a href="/login" class="button is-info">Login</a>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</nav>
+{{ end }}

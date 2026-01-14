@@ -1,0 +1,35 @@
+{{ define "navbar_admin" }}
+<nav class="navbar is-dark">
+  <div class="navbar-brand">
+    <a class="navbar-item has-text-weight-semibold" href="/">
+      Admin GIS Sulbar
+    </a>
+
+    <a role="button" class="navbar-burger" data-target="navbarAdmin">
+      <span></span><span></span><span></span>
+    </a>
+  </div>
+
+  <div id="navbarAdmin" class="navbar-menu">
+    <div class="navbar-start">
+      <a href="/admin/desa" class="navbar-item">Desa</a>
+
+      {{ if eq .role "admin" }}
+        <a href="/admin/maps" class="navbar-item">Peta</a>
+        <a href="/admin/users" class="navbar-item">User</a>
+      {{ end }}
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item has-text-grey-light">
+        {{ .name }}
+      </div>
+      <div class="navbar-item">
+        <a href="/logout" class="button is-danger is-light">
+          Logout
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+{{ end }}

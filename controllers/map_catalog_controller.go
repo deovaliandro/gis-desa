@@ -36,16 +36,25 @@ func MapList(c *gin.Context) {
 
 	session := sessions.Default(c)
 
-	c.HTML(200, "map_list.html", gin.H{
-		"maps": maps,
-		"role": session.Get("role"),
+	c.HTML(200, "base", gin.H{
+		"title":         "Manajemen Jenis Peta",
+		"Layout":        "admin",
+		"Page":          "admin",
+		"AdminTemplate": "admin/map_list",
+
+		"maps":       maps,
+		"name":       session.Get("name"),
+		"role":       session.Get("role"),
+		"isLoggedIn": true,
 	})
+
 }
 
 // ==========================
 // EDIT PAGE (ADMIN & USER)
 // ==========================
 func MapEditPage(c *gin.Context) {
+	session := sessions.Default(c)
 	id, _ := primitive.ObjectIDFromHex(c.Param("id"))
 
 	var m models.MapCatalog
@@ -59,9 +68,18 @@ func MapEditPage(c *gin.Context) {
 		return
 	}
 
-	c.HTML(200, "map_edit.html", gin.H{
-		"map": m,
+	c.HTML(200, "base", gin.H{
+		"title":         "Edit Jenis Peta",
+		"Layout":        "admin",
+		"Page":          "admin",
+		"AdminTemplate": "admin/map_edit",
+
+		"map":        m,
+		"name":       session.Get("name"),
+		"role":       session.Get("role"),
+		"isLoggedIn": true,
 	})
+
 }
 
 // ==========================
