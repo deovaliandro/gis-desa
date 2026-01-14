@@ -1,0 +1,163 @@
+# 📍 Pemetaan Spasial Sulawesi Barat
+Sistem Informasi Geografis (SIG) Desa berbasis **Go (Gin Framework)** dan **MongoDB** untuk visualisasi peta tematik dan pengelolaan data desa di Provinsi Sulawesi Barat.
+
+Aplikasi ini mendukung:
+- Halaman publik (guest)
+- Visualisasi peta tematik
+- Manajemen data desa
+- Manajemen jenis peta (admin only)
+- Sistem autentikasi berbasis peran (admin & user)
+
+---
+
+## 🧩 Teknologi yang Digunakan
+
+| Komponen | Teknologi |
+|--------|----------|
+| Backend | Go (Gin Framework) |
+| Database | MongoDB |
+| Frontend | Go HTML Template |
+| CSS | Bulma |
+| Peta | Leaflet.js |
+| Session | gin-contrib/sessions |
+| Auth | Role-based (Admin & User) |
+
+---
+
+## 📁 Struktur Direktori
+
+```
+.
+├── controllers/
+├── middleware/
+├── models/
+├── routes/
+├── templates/
+│   ├── base.html
+│   ├── home.html
+│   ├── map.html
+│   ├── partials/
+│   │   ├── navbar.html
+│   │   └── footer.html
+│   └── admin/
+├── static/
+│   ├── favicon.ico
+│   └── maps/
+├── main.go
+├── go.mod
+├── go.sum
+└── README.md
+```
+
+---
+
+## ⚙️ Prasyarat
+
+### 1️⃣ Go (minimal versi 1.20)
+
+```bash
+go version
+```
+
+Unduh jika belum tersedia: https://go.dev/dl/
+
+### 2️⃣ MongoDB
+
+Gunakan salah satu opsi berikut:
+
+**MongoDB Lokal**
+```bash
+mongod
+```
+
+**MongoDB Atlas**
+- https://www.mongodb.com/atlas
+
+---
+
+## 🔐 Konfigurasi Environment
+
+Buat file `.env`:
+
+```env
+APP_PORT=8080
+MONGO_URI=mongodb://localhost:27017
+MONGO_DB_NAME=gis_desa
+SESSION_SECRET=secret123
+```
+
+---
+
+## 📦 Instalasi Dependency
+
+```bash
+go mod tidy
+```
+
+---
+
+## 🗄️ Inisialisasi Database
+
+```bash
+mongosh
+```
+
+```js
+use gis_desa
+```
+
+### Admin Awal
+
+```js
+db.users.insertOne({
+  name: "Administrator",
+  username: "admin",
+  password: "$2a$10$wH4QX8ZQ3CjEJt5ZrUu7MeY7kF8l5Z3R6Q9Z8Y1Yx3KQqkYp6u2fS",
+  role: "admin"
+})
+```
+
+Password: **pass123**
+
+### Seed Jenis Peta
+
+```js
+db.maps.insertMany([
+  {
+    code: "pendidikan",
+    title: "Peta Tingkat Pendidikan",
+    description: "Rata-rata tingkat pendidikan desa",
+    image: "/static/maps/pendidikan.jpg",
+    order: 1,
+    is_active: true
+  }
+])
+```
+
+---
+
+## ▶️ Menjalankan Aplikasi
+
+```bash
+go run main.go
+```
+
+Akses:
+- http://localhost:8080
+
+---
+
+## 👥 Hak Akses
+
+| Role | Akses |
+|----|------|
+| Guest | Home & Peta |
+| User | Edit desa |
+| Admin | Semua fitur |
+
+---
+
+## 📄 Lisensi
+
+CC BY-NC-SA 4.0  
+© Deo Valiandro M. (sejak 2016)
