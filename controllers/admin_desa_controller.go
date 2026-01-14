@@ -114,12 +114,14 @@ func AdminDesaEditPage(c *gin.Context) {
 // ==========================
 func AdminDesaUpdate(c *gin.Context) {
 	kdepum := c.Param("kdepum")
+	pendidikan, _ := strconv.Atoi(c.PostForm("TINGKAT_PENDIDIKAN"))
 
 	update := bson.M{
 		"$set": bson.M{
-			"NAMOBJ": c.PostForm("NAMOBJ"),
-			"WADMKC": c.PostForm("WADMKC"),
-			"WADMKK": c.PostForm("WADMKK"),
+			"NAMOBJ":             c.PostForm("NAMOBJ"),
+			"WADMKC":             c.PostForm("WADMKC"),
+			"WADMKK":             c.PostForm("WADMKK"),
+			"TINGKAT_PENDIDIKAN": pendidikan,
 		},
 	}
 

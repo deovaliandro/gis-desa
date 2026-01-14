@@ -140,23 +140,27 @@
     // 4. STYLE DESA
     // ============================
     function styleDesa(feature) {
+      const v = feature.properties.TINGKAT_PENDIDIKAN || 0;
+
       return {
-        color: '#363636',
+        color: '#555',
         weight: 1,
-        fillColor: '#6baed6',
-        fillOpacity: 0.5
+        fillColor: getColor(v),
+        fillOpacity: 0.7
       };
     }
+
 
     // ============================
     // 5. INTERAKSI DESA
     // ============================
     function onEachDesa(feature, layer) {
       if (feature.properties) {
-        let popupContent = '<strong>Desa</strong><br>';
-        for (const key in feature.properties) {
-          popupContent += `${key}: ${feature.properties[key]}<br>`;
-        }
+        let popupContent = `<strong>Desa</strong> ${feature.properties.NAMOBJ}<br>`;
+        popupContent += `<strong>Tingkat Pendidikan:</strong> ${feature.properties.TINGKAT_PENDIDIKAN}<br>`;
+        // for (const key in feature.properties) {
+        //   popupContent += `${key}: ${feature.properties[key]}<br>`;
+        // }
         layer.bindPopup(popupContent);
       }
 
@@ -182,6 +186,21 @@
         map.fitBounds(geojson.getBounds());
       })
       .catch(err => console.error('Gagal memuat GeoJSON:', err));
+
+
+    function getColor(v) {
+      return v >= 9 ? '#ffffcc' :
+        v >= 8 ? '#c7e9b4' :
+          v >= 7 ? '#7fcdbb' :
+            v >= 6 ? '#41b6c4' :
+              v >= 5 ? '#1d91c0' :
+                v >= 4 ? '#225ea8' :
+                  v >= 3 ? '#253494' :
+                    v >= 2 ? '#2c2c84' :
+                      v >= 1 ? '#081d58' :
+                        'white';
+    }
+
   </script>
 
 </body>

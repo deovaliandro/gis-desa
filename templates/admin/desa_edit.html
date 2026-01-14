@@ -1,93 +1,99 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8">
   <title>Edit Desa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
+
 <body>
 
-<section class="section">
-  <div class="container">
+  <section class="section">
+    <div class="container">
 
-    <h1 class="title">Edit Data Desa</h1>
-    <p class="subtitle">
-      Kode Desa (KDEPUM): <strong>{{ .desa.KDEPUM }}</strong>
-    </p>
+      <h1 class="title">Edit Data Desa</h1>
+      <p class="subtitle">
+        Kode Desa (KDEPUM): <strong>{{ .desa.KDEPUM }}</strong>
+      </p>
 
-    <form method="POST">
+      <form method="POST">
 
-      <!-- KDEPUM (readonly) -->
-      <div class="field">
-        <label class="label">KDEPUM</label>
-        <input class="input" value="{{ .desa.KDEPUM }}" disabled>
-      </div>
+        <!-- KDEPUM (readonly) -->
+        <div class="field">
+          <label class="label">KDEPUM</label>
+          <input class="input" value="{{ .desa.KDEPUM }}" disabled>
+        </div>
 
-      <!-- Nama Desa -->
-      <div class="field">
-        <label class="label">Nama Desa</label>
-        <input class="input"
-               name="NAMOBJ"
-               value="{{ .desa.NAMOBJ }}">
-      </div>
+        <!-- Nama Desa -->
+        <div class="field">
+          <label class="label">Nama Desa</label>
+          <input class="input" name="NAMOBJ" value="{{ .desa.NAMOBJ }}">
+        </div>
 
-      <!-- Kecamatan -->
-      <div class="field">
-        <label class="label">Kecamatan</label>
-        <input class="input"
-               name="WADMKC"
-               value="{{ .desa.WADMKC }}">
-      </div>
+        <!-- Kecamatan -->
+        <div class="field">
+          <label class="label">Kecamatan</label>
+          <input class="input" name="WADMKC" value="{{ .desa.WADMKC }}">
+        </div>
 
-      <!-- Kabupaten -->
-      <div class="field">
-        <label class="label">Kabupaten</label>
-        <input class="input"
-               name="WADMKK"
-               value="{{ .desa.WADMKK }}">
-      </div>
+        <!-- Kabupaten -->
+        <div class="field">
+          <label class="label">Kabupaten</label>
+          <input class="input" name="WADMKK" value="{{ .desa.WADMKK }}">
+        </div>
 
-      <!-- Provinsi (readonly) -->
-      <div class="field">
-        <label class="label">Provinsi</label>
-        <input class="input"
-               value="{{ .desa.WADMPR }}"
-               disabled>
-      </div>
+        <!-- Provinsi (readonly) -->
+        <div class="field">
+          <label class="label">Provinsi</label>
+          <input class="input" value="{{ .desa.WADMPR }}" disabled>
+        </div>
 
-      <!-- Luas Wilayah -->
-      <div class="field">
-        <label class="label">Luas Wilayah (Ha)</label>
-        <input class="input"
-               type="number"
-               step="0.0001"
-               value="{{ .desa.LUASWH }}"
-               disabled>
-      </div>
+        <!-- Luas Wilayah -->
+        <div class="field">
+          <label class="label">Luas Wilayah (Ha)</label>
+          <input class="input" type="number" step="0.0001" value="{{ .desa.LUASWH }}" disabled>
+        </div>
 
-      <!-- Tombol -->
-      <div class="field is-grouped mt-5">
-        <p class="control">
-          <button class="button is-primary">
-            Simpan Perubahan
-          </button>
-        </p>
-        <p class="control">
-          <a href="/admin/desa"
-             class="button is-light">
-            Kembali
-          </a>
-        </p>
-      </div>
+        <!-- Tingkat Pendidikan -->
+        <div class="field">
+          <label class="label">Tingkat Pendidikan Rata-rata</label>
+          <div class="select is-fullwidth">
+            <select name="TINGKAT_PENDIDIKAN" required>
+              <option value="1" {{ if eq .desa.TingkatPendidikan 1 }}selected{{ end }}>Tidak Sekolah</option>
+              <option value="2" {{ if eq .desa.TingkatPendidikan 2 }}selected{{ end }}>PAUD / TK</option>
+              <option value="3" {{ if eq .desa.TingkatPendidikan 3 }}selected{{ end }}>Tamat SD</option>
+              <option value="4" {{ if eq .desa.TingkatPendidikan 4 }}selected{{ end }}>Tamat SMP</option>
+              <option value="5" {{ if eq .desa.TingkatPendidikan 5 }}selected{{ end }}>Tamat SMA / SMK</option>
+              <option value="6" {{ if eq .desa.TingkatPendidikan 6 }}selected{{ end }}>Diploma (D1–D3)</option>
+              <option value="7" {{ if eq .desa.TingkatPendidikan 7 }}selected{{ end }}>Sarjana (S1)</option>
+              <option value="8" {{ if eq .desa.TingkatPendidikan 8 }}selected{{ end }}>Magister (S2)</option>
+              <option value="9" {{ if eq .desa.TingkatPendidikan 9 }}selected{{ end }}>Doktor (S3)</option>
+            </select>
+          </div>
+        </div>
 
-    </form>
+        <!-- Tombol -->
+        <div class="field is-grouped mt-5">
+          <p class="control">
+            <button class="button is-primary">
+              Simpan Perubahan
+            </button>
+          </p>
+          <p class="control">
+            <a href="/admin/desa" class="button is-light">
+              Kembali
+            </a>
+          </p>
+        </div>
 
-  </div>
-</section>
+      </form>
+
+    </div>
+  </section>
 
 </body>
+
 </html>
