@@ -41,7 +41,18 @@ Unduh jika belum tersedia: <https://go.dev/dl/>
 
 ---
 
-### 2️⃣ MongoDB
+### 2️⃣ Node.js (disarankan v20)
+
+```bash
+node -v
+npm -v
+```
+
+Unduh: <https://nodejs.org/>/>
+
+---
+
+### 3️⃣ MongoDB
 
 Unduh MongoDB Community Edition:
 <https://www.mongodb.com/try/download/community>
@@ -74,8 +85,28 @@ SESSION_SECRET=super-secret-key
 
 ## 📦 Instalasi Dependency
 
+### Backend (Go)
+
 ```bash
 go mod tidy
+```
+
+### Frontend (Tailwind CSS)
+
+```bash
+npm install
+```
+
+Build CSS:
+
+```bash
+npm run build
+```
+
+Watch mode (development):
+
+```bash
+npm run dev
 ```
 
 ---
