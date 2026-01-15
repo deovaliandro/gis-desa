@@ -23,4 +23,5 @@ type Desa struct {
 	ShapeLeng         float64            `bson:"Shape_Leng"`
 	ShapeArea         float64            `bson:"Shape_Area"`
 	TingkatPendidikan int                `bson:"TINGKAT_PENDIDIKAN"`
+	Kesehatan         int                `bson:"KESEHATAN"`
 }

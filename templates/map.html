@@ -1,16 +1,25 @@
 {{ define "map-page" }}
 <section class="py-8">
   <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
-
     <div class="lg:col-span-1 bg-white rounded-xl shadow-sm overflow-hidden">
-      <div class="px-4 py-3 border-b font-semibold">
-        {{ .mapTitle }}
-      </div>
+      <div class="px-4 py-3 border-b font-semibold">{{ .mapTitle }}</div>
       <div id="map" class="h-[520px]"></div>
     </div>
 
-    <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-5 text-sm space-y-4">
+    <div
+      class="lg:col-span-2 bg-white rounded-xl shadow-sm p-5 text-sm space-y-4"
+    >
       <h3 class="font-semibold text-base">Interpretasi</h3>
+
+      {{ if eq .mapType "kesehatan" }}
+      <ul>
+        <li>5 → Sangat sehat (putih)</li>
+        <li>4 → Sehat</li>
+        <li>3 → Cukup sehat</li>
+        <li>2 → Kurang sehat</li>
+        <li>1 → Gizi buruk (gelap)</li>
+      </ul>
+      {{ else }}
 
       <p>
         Peta ini menampilkan <strong>tingkat pendidikan rata-rata desa</strong>
@@ -33,22 +42,22 @@
         <li>S2</li>
         <li>S3</li>
       </ol>
+      {{ end }}
     </div>
-
   </div>
 </section>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  const map = L.map('map', {
+  const map = L.map("map", {
     minZoom: 8,
     maxZoom: 15,
-    worldCopyJump: true
+    worldCopyJump: true,
   });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "&copy; OpenStreetMap contributors",
   }).addTo(map);
 
   /* ===============================
@@ -67,8 +76,10 @@
   //                     '#ffffff';
   // }
 
+  const mapType = "{{ .mapType }}";
+
   function getColor(v) {
-    if (v <= 0) return '#ffffff';
+    if (v <= 0) return "#ffffff";
 
     const min = 1;
     const max = 9;
@@ -82,52 +93,84 @@
     return `hsl(0, 70%, ${lightness}%)`;
   }
 
+  function getHealthColor(v) {
+    switch (v) {
+      case 5:
+        return "#ffffff"; // sangat sehat
+      case 4:
+        return "#dddddd";
+      case 3:
+        return "#bbbbbb";
+      case 2:
+        return "#888888";
+      case 1:
+        return "#444444";
+      default:
+        return "#ffffff";
+    }
+  }
 
   function styleDesa(feature) {
+    // === PETA KESEHATAN ===
+    if (mapType === "kesehatan") {
+      const v = feature.properties.KESEHATAN ?? 0;
+      return {
+        color: "#444",
+        weight: 1,
+        fillColor: getHealthColor(v),
+        fillOpacity: 0.8,
+      };
+    }
+
+    // === PETA PENDIDIKAN ===
+    const v = feature.properties.TINGKAT_PENDIDIKAN ?? 0;
     return {
-      color: '#555',
+      color: "#555",
       weight: 1,
-      opacity: 0.3,
-      fillColor: getColor(feature.properties.TINGKAT_PENDIDIKAN || 0),
-      fillOpacity: 0.7
+      fillColor: getColor(v),
+      fillOpacity: 0.7,
     };
   }
 
   function onEachDesa(feature, layer) {
-    if (feature.properties) {
-      layer.bindPopup(
-        `<strong>${feature.properties.NAMOBJ}</strong><br>
-         Tingkat Pendidikan: ${feature.properties.TINGKAT_PENDIDIKAN}`
-      );
+    const p = feature.properties;
+    let popup = `<strong>${p.NAMOBJ}</strong><br>`;
+
+    if (mapType === "kesehatan") {
+      popup += `Kesehatan: ${p.KESEHATAN}`;
+    } else {
+      popup += `Tingkat Pendidikan: ${p.TINGKAT_PENDIDIKAN}`;
     }
+
+    layer.bindPopup(popup);
+
+    layer.on({
+      mouseover: (e) => e.target.setStyle({ weight: 2 }),
+      mouseout: (e) => geojson.resetStyle(e.target),
+    });
   }
 
-  fetch('/api/map')
-    .then(res => res.json())
-    .then(data => {
-      const geojson = L.geoJSON(data, {
+  let geojson;
+
+  fetch("/api/map")
+    .then((res) => res.json())
+    .then((data) => {
+      geojson = L.geoJSON(data, {
         style: styleDesa,
-        onEachFeature: onEachDesa
+        onEachFeature: onEachDesa,
       }).addTo(map);
 
       map.fitBounds(geojson.getBounds(), {
         padding: [40, 40],
-        animate: false
+        animate: false,
       });
 
-      map.setView(
-        [-2.209078, 119.402847],
-        map.getZoom(),
-        { animate: false }
-      );
+      map.setView([-2.209078, 119.402847], map.getZoom(), { animate: false });
 
       setTimeout(() => {
         map.invalidateSize();
       }, 200);
     });
-
-
 </script>
-
 
 {{ end }}

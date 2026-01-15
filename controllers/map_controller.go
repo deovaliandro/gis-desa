@@ -79,9 +79,11 @@ func GetMap(c *gin.Context) {
 
 		if desa, found := desaMap[kdepum]; found {
 			props["TINGKAT_PENDIDIKAN"] = desa.TingkatPendidikan
+			props["KESEHATAN"] = desa.Kesehatan
 		} else {
 			// default jika tidak ada di DB
 			props["TINGKAT_PENDIDIKAN"] = 0
+			props["KESEHATAN"] = 0
 		}
 	}
 
